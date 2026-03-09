@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitWisers — Dashboard</title>
+    <meta name="description"
+        content="BitWisers Dashboard — manage environmental credit projects, verification, and trading on the Polygon blockchain.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* ==========================================================================
+           Design Tokens
+           ========================================================================== */
+        :root {
+            --bg-deep: #040D08;
+            --bg-surface: #0A1A0F;
+            --bg-card: #0F2318;
+            --bg-card-hover: #132E1E;
+            --green-primary: #1E7A45;
+            --green-accent: #2ECC71;
+            --green-glow: #34D399;
+            --green-lime: #A3E635;
+            --text-primary: #E8F5EE;
+            --text-secondary: #B0CFBC;
+            --text-muted: #6B9E80;
+            --text-subtle: #3D6B50;
+            --border-subtle: rgba(46, 204, 113, 0.12);
+            --border-active: rgba(46, 204, 113, 0.45);
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --info: #3B82F6;
+            --purple: #A855F7;
+            --orange: #F97316;
+            --font-heading: 'Syne', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --easing-custom: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-fast: 0.2s var(--easing-custom);
+            --transition-normal: 0.3s var(--easing-custom);
+
+            --sidebar-width: 260px;
+            --sidebar-collapsed: 68px;
+            --topbar-height: 64px;
+        }
+
+        /* ==========================================================================
+           Reset
+           ========================================================================== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: var(--bg-deep);
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background: var(--bg-deep);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* ==========================================================================
+           Layout Shell
+           ========================================================================== */
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ==========================================================================
+           SIDEBAR
+           ========================================================================== */
+        .sidebar {
+            width: var(--sidebar-width);
+            min-height: 100vh;
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            transition: width var(--transition-normal);
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed);
+        }
+
+        /* -- Sidebar Header -- */
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            min-height: 72px;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .sidebar-logo .logo-icon {
+            flex-shrink: 0;
+            color: var(--green-glow);
+            fill: rgba(52, 211, 153, 0.2);
+            width: 28px;
+            height: 28px;
+        }
+
+        .sidebar-logo .logo-text {
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 1.25rem;
+            background: linear-gradient(to right, var(--green-glow), var(--green-accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: opacity var(--transition-normal);
+        }
+
+        .sidebar.collapsed .sidebar-logo .logo-text {
+            opacity: 0;
+            width: 0;
+        }
+
+        .collapse-btn {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: all var(--transition-fast);
+        }
+
+        .collapse-btn:hover {
+            background: rgba(46, 204, 113, 0.1);
+            color: var(--green-accent);
+        }
+
+        .collapse-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .sidebar.collapsed .collapse-btn {
+            transform: rotate(180deg);
+        }
+
+        /* -- Role Badge -- */
+        .role-badge-container {
+            padding: 12px 16px;
+            overflow: hidden;
+        }
+
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+            transition: all var(--transition-normal);
+        }
+
+        .role-badge .badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Role colors */
+        .role-badge.ngo {
+            background: rgba(46, 204, 113, 0.12);
+            color: var(--green-accent);
+            border: 1px solid rgba(46, 204, 113, 0.25);
+        }
+
+        .role-badge.ngo .badge-dot {
+            background: var(--green-accent);
+        }
+
+        .role-badge.auditor {
+            background: rgba(59, 130, 246, 0.12);
+            color: var(--info);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+        }
+
+        .role-badge.auditor .badge-dot {
+            background: var(--info);
+        }
+
+        .role-badge.company {
+            background: rgba(168, 85, 247, 0.12);
+            color: var(--purple);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+        }
+
+        .role-badge.company .badge-dot {
+            background: var(--purple);
+        }
+
+        .role-badge.admin {
+            background: rgba(249, 115, 22, 0.12);
+            color: var(--orange);
+            border: 1px solid rgba(249, 115, 22, 0.25);
+        }
+
+        .role-badge.admin .badge-dot {
+            background: var(--orange);
+        }
+
+        .sidebar.collapsed .role-badge span:not(.badge-dot) {
+            display: none;
+        }
+
+        .sidebar.collapsed .role-badge {
+            padding: 6px;
+            justify-content: center;
+        }
+
+        /* -- Nav Groups -- */
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 8px 0;
+        }
+
+        .sidebar-nav::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: var(--border-subtle);
+            border-radius: 10px;
+        }
+
+        .nav-group {
+            margin-bottom: 4px;
+        }
+
+        .nav-group-label {
+            padding: 12px 20px 6px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-subtle);
+            white-space: nowrap;
+            overflow: hidden;
+            transition: opacity var(--transition-normal);
+        }
+
+        .sidebar.collapsed .nav-group-label {
+            opacity: 0;
+            height: 0;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-item {
+            position: relative;
+            margin: 2px 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: rgba(46, 204, 113, 0.06);
+        }
+
+        .nav-link.active {
+            color: var(--green-accent);
+            background: rgba(46, 204, 113, 0.1);
+        }
+
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 4px;
+            bottom: 4px;
+            width: 3px;
+            border-radius: 0 3px 3px 0;
+            background: var(--green-accent);
+        }
+
+        .nav-link svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .nav-link .nav-text {
+            transition: opacity var(--transition-normal);
+        }
+
+        .sidebar.collapsed .nav-link .nav-text {
+            opacity: 0;
+            width: 0;
+        }
+
+        .sidebar.collapsed .nav-link {
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .sidebar.collapsed .nav-item {
+            margin: 2px 6px;
+        }
+
+        /* -- Sidebar Footer (Wallet) -- */
+        .sidebar-footer {
+            border-top: 1px solid var(--border-subtle);
+            padding: 16px;
+            overflow: hidden;
+        }
+
+        .wallet-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .wallet-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--green-primary), var(--green-accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .wallet-avatar svg {
+            width: 18px;
+            height: 18px;
+            color: #fff;
+        }
+
+        .wallet-details {
+            overflow: hidden;
+            transition: opacity var(--transition-normal);
+        }
+
+        .sidebar.collapsed .wallet-details {
+            opacity: 0;
+            width: 0;
+        }
+
+        .wallet-addr {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .wallet-addr .copy-btn {
+            width: 16px;
+            height: 16px;
+            color: var(--text-subtle);
+            transition: color var(--transition-fast);
+        }
+
+        .wallet-addr .copy-btn:hover {
+            color: var(--green-accent);
+        }
+
+        .wallet-chain {
+            font-size: 0.68rem;
+            color: var(--text-subtle);
+        }
+
+        .disconnect-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            border: 1px solid var(--border-subtle);
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .disconnect-btn:hover {
+            border-color: rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+            background: rgba(239, 68, 68, 0.06);
+        }
+
+        .disconnect-btn svg {
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+        }
+
+        .sidebar.collapsed .disconnect-btn span {
+            display: none;
+        }
+
+        /* ==========================================================================
+           MAIN CONTENT AREA
+           ========================================================================== */
+        .main-wrapper {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: margin-left var(--transition-normal);
+        }
+
+        .sidebar.collapsed~.main-wrapper {
+            margin-left: var(--sidebar-collapsed);
+        }
+
+        /* ==========================================================================
+           TOP NAVBAR
+           ========================================================================== */
+        .topbar {
+            height: var(--topbar-height);
+            background: rgba(10, 26, 15, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+
+        .breadcrumb span {
+            color: var(--text-subtle);
+        }
+
+        .breadcrumb .bc-sep {
+            color: var(--text-subtle);
+        }
+
+        .breadcrumb .bc-current {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(15, 35, 24, 0.6);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 8px 16px;
+            min-width: 320px;
+            max-width: 420px;
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .search-bar:hover,
+        .search-bar:focus-within {
+            border-color: rgba(46, 204, 113, 0.3);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.06);
+        }
+
+        .search-bar svg {
+            width: 16px;
+            height: 16px;
+            color: var(--text-subtle);
+            flex-shrink: 0;
+        }
+
+        .search-bar input {
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        .search-bar input::placeholder {
+            color: var(--text-subtle);
+        }
+
+        .search-kbd {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 7px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-subtle);
+            white-space: nowrap;
+        }
+
+        /* Right actions */
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Chain selector */
+        .chain-selector {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: rgba(15, 35, 24, 0.5);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .chain-selector:hover {
+            border-color: rgba(130, 71, 229, 0.4);
+            background: rgba(130, 71, 229, 0.08);
+        }
+
+        .chain-selector .chain-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #8247E5;
+        }
+
+        .chain-selector svg {
+            width: 14px;
+            height: 14px;
+            color: var(--text-subtle);
+        }
+
+        /* Notification bell */
+        .notif-btn {
+            position: relative;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-subtle);
+            background: rgba(15, 35, 24, 0.5);
+            transition: all var(--transition-fast);
+        }
+
+        .notif-btn:hover {
+            border-color: rgba(46, 204, 113, 0.3);
+            background: rgba(46, 204, 113, 0.06);
+        }
+
+        .notif-btn svg {
+            width: 18px;
+            height: 18px;
+            color: var(--text-muted);
+        }
+
+        .notif-badge {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--danger);
+            font-size: 0.55rem;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--bg-surface);
+        }
+
+        /* Wallet pill */
+        .wallet-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 50px;
+            background: rgba(15, 35, 24, 0.6);
+            border: 1px solid var(--border-subtle);
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .wallet-pill:hover {
+            border-color: rgba(46, 204, 113, 0.35);
+        }
+
+        .wallet-pill .wp-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green-accent);
+            box-shadow: 0 0 6px var(--green-accent);
+        }
+
+        /* Avatar dropdown */
+        .avatar-dropdown {
+            position: relative;
+        }
+
+        .avatar-trigger {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--green-primary), var(--green-accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid rgba(46, 204, 113, 0.3);
+            transition: all var(--transition-fast);
+        }
+
+        .avatar-trigger:hover {
+            border-color: var(--green-accent);
+            box-shadow: 0 0 16px rgba(46, 204, 113, 0.2);
+        }
+
+        .avatar-trigger svg {
+            width: 18px;
+            height: 18px;
+            color: #fff;
+        }
+
+        .avatar-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 200px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 6px;
+            display: none;
+            z-index: 200;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+        }
+
+        .avatar-menu.open {
+            display: block;
+        }
+
+        .avatar-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            transition: all var(--transition-fast);
+            width: 100%;
+            text-align: left;
+        }
+
+        .avatar-menu-item:hover {
+            background: rgba(46, 204, 113, 0.08);
+            color: var(--text-primary);
+        }
+
+        .avatar-menu-item svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .avatar-menu-divider {
+            height: 1px;
+            background: var(--border-subtle);
+            margin: 4px 0;
+        }
+
+        .avatar-menu-item.danger:hover {
+            color: var(--danger);
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        /* ==========================================================================
+           PAGE CONTENT AREA
+           ========================================================================== */
+        .page-content {
+            flex: 1;
+            padding: 32px 28px;
+        }
+
+        /* Placeholder content for the dashboard */
+        .dashboard-welcome {
+            max-width: 720px;
+        }
+
+        .dw-greeting {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 6px;
+        }
+
+        .dw-greeting .gradient-text {
+            background: linear-gradient(135deg, var(--green-glow), var(--green-lime));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dw-sub {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Quick stat cards (placeholder) */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 2rem;
+        }
+
+        .qs-card {
+            background: rgba(15, 35, 24, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 20px;
+            transition: all var(--transition-fast);
+        }
+
+        .qs-card:hover {
+            border-color: rgba(46, 204, 113, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .qs-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .qs-header span {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .qs-header svg {
+            width: 18px;
+            height: 18px;
+            color: var(--green-accent);
+        }
+
+        .qs-value {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: var(--green-glow);
+            margin-bottom: 4px;
+        }
+
+        .qs-trend {
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .qs-trend.up {
+            color: var(--green-accent);
+        }
+
+        .qs-trend.down {
+            color: var(--danger);
+        }
+
+        .qs-trend svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Empty content panel placeholder */
+        .content-placeholder {
+            background: rgba(15, 35, 24, 0.4);
+            border: 1px dashed var(--border-subtle);
+            border-radius: 16px;
+            padding: 48px;
+            text-align: center;
+            color: var(--text-subtle);
+            font-size: 0.9rem;
+        }
+
+        .content-placeholder svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 12px;
+            opacity: 0.3;
+        }
+
+        /* ==========================================================================
+           Animations
+           ========================================================================== */
+        .fade-in {
+            animation: fadeIn 0.5s var(--easing-custom) forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ==========================================================================
+           Role Switcher Buttons (Demo)
+           ========================================================================== */
+        .role-switcher {
+            display: flex;
+            gap: 8px;
+            padding: 16px 16px 0;
+            flex-wrap: wrap;
+        }
+
+        .rs-btn {
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            border: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            color: var(--text-muted);
+        }
+
+        .rs-btn:hover {
+            background: rgba(46, 204, 113, 0.08);
+            color: var(--text-primary);
+        }
+
+        .rs-btn.active-role {
+            background: rgba(46, 204, 113, 0.15);
+            color: var(--green-accent);
+            border-color: var(--green-accent);
+        }
+
+        /* ==========================================================================
+           Responsive
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .search-bar {
+                min-width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: var(--sidebar-width);
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .sidebar.collapsed {
+                transform: translateX(-100%);
+            }
+
+            .main-wrapper {
+                margin-left: 0 !important;
+            }
+
+            .quick-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .search-bar {
+                display: none;
+            }
+
+            .chain-selector span {
+                display: none;
+            }
+
+            .wallet-pill .wp-addr {
+                display: none;
+            }
+
+            .topbar {
+                padding: 0 16px;
+            }
+
+            .page-content {
+                padding: 20px 16px;
+            }
+
+            .mobile-menu-toggle {
+                display: flex !important;
+            }
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            width: 38px;
+            height: 38px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .mobile-menu-toggle:hover {
+            background: rgba(46, 204, 113, 0.08);
+        }
+
+        .mobile-menu-toggle svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text-muted);
+        }
+
+        /* Sidebar mobile overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 99;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        /* Tooltip for collapsed sidebar */
+        .sidebar.collapsed .nav-link {
+            position: relative;
+        }
+
+        .sidebar.collapsed .nav-link:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: calc(100% + 12px);
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            white-space: nowrap;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-subtle);
+            z-index: 200;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
+
+    <div class="dashboard-layout">
+        <!-- ==================== SIDEBAR ==================== -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Header -->
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-logo">
+                    <i data-lucide="hexagon" class="logo-icon"></i>
+                    <span class="logo-text">BitWisers</span>
+                </a>
+                <button class="collapse-btn" onclick="toggleSidebar()" title="Collapse sidebar">
+                    <i data-lucide="panel-left-close"></i>
+                </button>
+            </div>
+
+            <!-- Role Badge -->
+            <div class="role-badge-container">
+                <div class="role-badge ngo" id="roleBadge">
+                    <span class="badge-dot"></span>
+                    <span id="roleBadgeText">NGO</span>
+                </div>
+            </div>
+
+            <!-- Role Switcher (for demo) -->
+            <div class="role-switcher" id="roleSwitcher">
+                <button class="rs-btn active-role" onclick="switchRole('ngo')">NGO</button>
+                <button class="rs-btn" onclick="switchRole('auditor')">Auditor</button>
+                <button class="rs-btn" onclick="switchRole('company')">Company</button>
+                <button class="rs-btn" onclick="switchRole('admin')">Admin</button>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="sidebar-nav" id="sidebarNav">
+                <!-- Populated by JS based on role -->
+            </nav>
+
+            <!-- Footer — Wallet -->
+            <div class="sidebar-footer">
+                <div class="wallet-info">
+                    <div class="wallet-avatar"><i data-lucide="wallet"></i></div>
+                    <div class="wallet-details">
+                        <div class="wallet-addr">
+                            <span>0x7a8b…93f4</span>
+                            <button class="copy-btn" onclick="copyAddress()" title="Copy address"><i
+                                    data-lucide="copy"></i></button>
+                        </div>
+                        <div class="wallet-chain">Polygon Mainnet</div>
+                    </div>
+                </div>
+                <button class="disconnect-btn" onclick="disconnectWallet()">
+                    <i data-lucide="log-out"></i>
+                    <span>Disconnect</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- ==================== MAIN ==================== -->
+        <div class="main-wrapper">
+            <!-- Top Navbar -->
+            <header class="topbar">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <button class="mobile-menu-toggle" onclick="openMobileSidebar()">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <div class="breadcrumb">
+                        <span>Dashboard</span>
+                        <span class="bc-sep">/</span>
+                        <span class="bc-current" id="breadcrumbCurrent">Overview</span>
+                    </div>
+                </div>
+
+                <!-- Search -->
+                <div class="search-bar" onclick="this.querySelector('input').focus()">
+                    <i data-lucide="search"></i>
+                    <input type="text" placeholder="Search projects, credits, transactions…" id="globalSearch">
+                    <span class="search-kbd">⌘K</span>
+                </div>
+
+                <!-- Right Actions -->
+                <div class="topbar-actions">
+                    <!-- Chain Selector -->
+                    <button class="chain-selector">
+                        <span class="chain-dot"></span>
+                        <span>Polygon</span>
+                        <i data-lucide="chevron-down"></i>
+                    </button>
+
+                    <!-- Notifications -->
+                    <button class="notif-btn" id="notifBtn">
+                        <i data-lucide="bell"></i>
+                        <span class="notif-badge">3</span>
+                    </button>
+
+                    <!-- Wallet Pill -->
+                    <div class="wallet-pill">
+                        <span class="wp-dot"></span>
+                        <span class="wp-addr">0x7a8b…93f4</span>
+                    </div>
+
+                    <!-- Avatar Dropdown -->
+                    <div class="avatar-dropdown">
+                        <button class="avatar-trigger" onclick="toggleAvatarMenu()">
+                            <i data-lucide="user"></i>
+                        </button>
+                        <div class="avatar-menu" id="avatarMenu">
+                            <button class="avatar-menu-item"><i data-lucide="user"></i> Profile</button>
+                            <button class="avatar-menu-item"><i data-lucide="settings"></i> Settings</button>
+                            <button class="avatar-menu-item"><i data-lucide="help-circle"></i> Help & Support</button>
+                            <div class="avatar-menu-divider"></div>
+                            <button class="avatar-menu-item danger"><i data-lucide="log-out"></i> Sign Out</button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="page-content fade-in">
+                <div class="dashboard-welcome">
+                    <h1 class="dw-greeting">Welcome back 👋</h1>
+                    <p class="dw-sub">Here's what's happening across your environmental projects today.</p>
+                </div>
+
+                <div class="quick-stats">
+                    <div class="qs-card">
+                        <div class="qs-header"><span>Credits Issued</span><i data-lucide="coins"></i></div>
+                        <div class="qs-value">124,500</div>
+                        <div class="qs-trend up"><i data-lucide="trending-up"></i> +12.3% this month</div>
+                    </div>
+                    <div class="qs-card">
+                        <div class="qs-header"><span>Active Projects</span><i data-lucide="folder-kanban"></i></div>
+                        <div class="qs-value">38</div>
+                        <div class="qs-trend up"><i data-lucide="trending-up"></i> +4 new</div>
+                    </div>
+                    <div class="qs-card">
+                        <div class="qs-header"><span>CO₂ Offset</span><i data-lucide="leaf"></i></div>
+                        <div class="qs-value">892K</div>
+                        <div class="qs-trend up"><i data-lucide="trending-up"></i> +8.1% this month</div>
+                    </div>
+                    <div class="qs-card">
+                        <div class="qs-header"><span>Wallet Balance</span><i data-lucide="wallet"></i></div>
+                        <div class="qs-value">$45.2K</div>
+                        <div class="qs-trend down"><i data-lucide="trending-down"></i> -2.1% this month</div>
+                    </div>
+                </div>
+
+                <div class="content-placeholder">
+                    <i data-lucide="layout-dashboard"></i>
+                    <p>Dashboard content panels will load here based on your role.<br>
+                        Switch roles using the sidebar buttons to see navigation changes.</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // ==================== Navigation Config ====================
+        const navConfig = {
+            overview: {
+                label: 'Overview',
+                roles: ['ngo', 'auditor', 'company', 'admin'],
+                items: [
+                    { icon: 'layout-dashboard', text: 'Dashboard', active: true },
+                    { icon: 'bar-chart-3', text: 'Analytics' }
+                ]
+            },
+            projects: {
+                label: 'Projects',
+                roles: ['ngo'],
+                items: [
+                    { icon: 'plus-circle', text: 'Register Project' },
+                    { icon: 'folder-open', text: 'My Projects' },
+                    { icon: 'file-text', text: 'Documents' }
+                ]
+            },
+            verification: {
+                label: 'Verification',
+                roles: ['auditor'],
+                items: [
+                    { icon: 'clock', text: 'Pending Queue' },
+                    { icon: 'clipboard-check', text: 'Review Panel' },
+                    { icon: 'history', text: 'History' }
+                ]
+            },
+            credits: {
+                label: 'Credits',
+                roles: ['company'],
+                items: [
+                    { icon: 'store', text: 'Marketplace' },
+                    { icon: 'coins', text: 'My Credits' },
+                    { icon: 'recycle', text: 'Retire Credits' }
+                ]
+            },
+            explorer: {
+                label: 'Explorer',
+                roles: ['ngo', 'auditor', 'company', 'admin'],
+                items: [
+                    { icon: 'search', text: 'Credit Explorer' },
+                    { icon: 'arrow-left-right', text: 'Transaction History' }
+                ]
+            },
+            admin: {
+                label: 'Admin',
+                roles: ['admin'],
+                items: [
+                    { icon: 'users', text: 'Users' },
+                    { icon: 'folder-kanban', text: 'Projects' },
+                    { icon: 'receipt', text: 'Transactions' },
+                    { icon: 'server', text: 'System' }
+                ]
+            }
+        };
+
+        const roleLabels = {
+            ngo: 'NGO',
+            auditor: 'Auditor',
+            company: 'Company',
+            admin: 'Admin'
+        };
+
+        const roleClasses = {
+            ngo: 'ngo',
+            auditor: 'auditor',
+            company: 'company',
+            admin: 'admin'
+        };
+
+        let currentRole = 'ngo';
+
+        // ==================== Build Nav ====================
+        function buildNav(role) {
+            const navEl = document.getElementById('sidebarNav');
+            let html = '';
+
+            for (const [key, group] of Object.entries(navConfig)) {
+                if (!group.roles.includes(role)) continue;
+
+                html += `<div class="nav-group">`;
+                html += `<div class="nav-group-label">${group.label}</div>`;
+                html += `<ul>`;
+                group.items.forEach(item => {
+                    html += `
+                        <li class="nav-item">
+                            <a href="#" class="nav-link ${item.active ? 'active' : ''}" data-tooltip="${item.text}" onclick="setActiveNav(this, '${item.text}')">
+                                <i data-lucide="${item.icon}"></i>
+                                <span class="nav-text">${item.text}</span>
+                            </a>
+                        </li>`;
+                });
+                html += `</ul></div>`;
+            }
+
+            navEl.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function setActiveNav(el, text) {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('breadcrumbCurrent').textContent = text;
+        }
+
+        // ==================== Role Switching ====================
+        function switchRole(role) {
+            currentRole = role;
+
+            // Update badge
+            const badge = document.getElementById('roleBadge');
+            badge.className = 'role-badge ' + roleClasses[role];
+            document.getElementById('roleBadgeText').textContent = roleLabels[role];
+
+            // Update switcher active
+            document.querySelectorAll('.rs-btn').forEach(b => b.classList.remove('active-role'));
+            document.querySelector(`.rs-btn[onclick="switchRole('${role}')"]`).classList.add('active-role');
+
+            // Rebuild nav
+            buildNav(role);
+        }
+
+        // ==================== Sidebar Collapse ====================
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+        }
+
+        // ==================== Mobile Sidebar ====================
+        function openMobileSidebar() {
+            document.getElementById('sidebar').classList.add('mobile-open');
+            document.getElementById('sidebarOverlay').classList.add('show');
+        }
+        function closeMobileSidebar() {
+            document.getElementById('sidebar').classList.remove('mobile-open');
+            document.getElementById('sidebarOverlay').classList.remove('show');
+        }
+
+        // ==================== Avatar Menu ====================
+        function toggleAvatarMenu() {
+            document.getElementById('avatarMenu').classList.toggle('open');
+        }
+        // Close on click outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.avatar-dropdown')) {
+                document.getElementById('avatarMenu').classList.remove('open');
+            }
+        });
+
+        // ==================== Wallet helpers ====================
+        function copyAddress() {
+            navigator.clipboard.writeText('0x7a8b9c0d1e2f3a4b5c6d7e8f90123456789abcd');
+            // Visual feedback could be added
+        }
+        function disconnectWallet() {
+            // In a real app, disconnect wallet
+            window.location.href = 'auth.html';
+        }
+
+        // ==================== Keyboard shortcut ⌘K ====================
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('globalSearch').focus();
+            }
+        });
+
+        // ==================== Init ====================
+        buildNav(currentRole);
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
