@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitWisers - The Future of Environmental Credit Markets</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Background Elements -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+    <div class="bg-grid"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <i data-lucide="hexagon" class="logo-icon"></i>
+                <span class="logo-text">BitWisers</span>
+            </a>
+            <div class="nav-links desktop-only">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#marketplace">Marketplace</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="nav-actions desktop-only">
+                <a href="auth.html" class="btn btn-ghost">Sign In</a>
+                <a href="#" class="btn btn-glow">Launch App</a>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-menu-btn" id="closeMenuBtn"><i data-lucide="x"></i></button>
+        <div class="mobile-nav-links">
+            <a href="#home" style="--i: 1">Home</a>
+            <a href="#about" style="--i: 2">About</a>
+            <a href="#features" style="--i: 3">Features</a>
+            <a href="#how-it-works" style="--i: 4">How It Works</a>
+            <a href="#marketplace" style="--i: 5">Marketplace</a>
+            <a href="#contact" style="--i: 6">Contact</a>
+            <div class="mobile-actions" style="--i: 7">
+                <a href="auth.html" class="btn btn-ghost">Sign In</a>
+                <a href="#" class="btn btn-glow w-full mt-4">Launch App</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+        <!-- Cinematic Background layers handled in CSS -->
+        <div class="hero-network-bg" id="network-canvas-container">
+            <!-- Simulated via JS/CSS -->
+        </div>
+
+        <div class="container hero-container">
+            <div class="hero-content">
+                <div class="badge fade-up">
+                    <span class="pulse-dot"></span>
+                    ⬡ Live on Polygon Mainnet
+                </div>
+                <h1 class="hero-title fade-up stagger-1">
+                    The Future of <span class="text-gradient">Environmental</span> Credit Markets
+                </h1>
+                <p class="hero-subtitle fade-up stagger-2">
+                    BitWisers brings radical transparency to carbon markets. Register, verify, mint, trade, and retire
+                    environmental credits — all on-chain.
+                </p>
+                <div class="hero-actions fade-up stagger-3">
+                    <a href="#" class="btn btn-glow btn-large">
+                        Get Started Free <i data-lucide="arrow-right" class="icon-sm"></i>
+                    </a>
+                    <a href="#" class="btn btn-ghost-glass btn-large">
+                        <i data-lucide="play" class="icon-sm"></i> Watch Demo
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Right Side Visual -->
+            <div class="hero-visual fade-up stagger-4">
+                <div class="hero-glow-bloom"></div>
+                <div class="glass-card floating-dashboard">
+                    <!-- Dashboard Header -->
+                    <div class="dash-header">
+                        <div class="live-badge"><span class="dot"></span> Live</div>
+                        <div class="dash-title">BitWisers Network</div>
+                    </div>
+
+                    <!-- Dash Stats -->
+                    <div class="dash-stats">
+                        <div class="dash-stat">38 Projects</div>
+                        <div class="dash-stat">124K Credits</div>
+                        <div class="dash-stat">$2.4M Value</div>
+                    </div>
+
+                    <!-- Dash Chart SVG -->
+                    <div class="dash-chart">
+                        <svg viewBox="0 0 400 100" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="rgba(52, 211, 153, 0.4)" />
+                                    <stop offset="100%" stop-color="rgba(52, 211, 153, 0)" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M0,80 Q50,60 100,70 T200,40 T300,50 T400,20 L400,100 L0,100 Z"
+                                fill="url(#chartGradient)" />
+                            <path d="M0,80 Q50,60 100,70 T200,40 T300,50 T400,20" fill="none" stroke="var(--green-glow)"
+                                stroke-width="3" />
+                        </svg>
+                    </div>
+
+                    <!-- Dash Projects list -->
+                    <div class="dash-projects">
+                        <div class="dash-project-row">
+                            <div class="proj-left"><span class="proj-dot" style="background:#34D399"></span> Amazon
+                                Reforestation</div>
+                            <div class="proj-right">50,000 <span class="badge-verified">Verified ✓</span></div>
+                        </div>
+                        <div class="dash-project-row">
+                            <div class="proj-left"><span class="proj-dot" style="background:#A3E635"></span> Wind Farm
+                                TX</div>
+                            <div class="proj-right">12,500 <span class="badge-verified">Verified ✓</span></div>
+                        </div>
+                        <div class="dash-project-row">
+                            <div class="proj-left"><span class="proj-dot" style="background:#F59E0B"></span> Ocean
+                                Cleanup</div>
+                            <div class="proj-right">8,200 <span class="badge-verified">Verified ✓</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orbiting Chips -->
+                <div class="orbit-chip chip-1 glass-card">🪙 500 Credits Minted</div>
+                <div class="orbit-chip chip-2 glass-card">✅ Project Verified</div>
+                <div class="orbit-chip chip-3 glass-card">♻️ Credits Retired</div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator fade-up stagger-4">
+            <i data-lucide="chevron-down"></i>
+        </div>
+
+        <div class="container relative">
+            <div class="stats-bar glass-card fade-up stagger-5">
+                <div class="stat-item">
+                    <span class="stat-value" data-target="124500">0</span>
+                    <span class="stat-label">Credits Issued</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" data-target="38">0</span>
+                    <span class="stat-label">Active Projects</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value prefix" data-target="2.4" data-suffix="M">$0</span>
+                    <span class="stat-label">Carbon Value</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" data-target="12">0</span>
+                    <span class="stat-label">Countries</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOCIAL PROOF -->
+    <section class="social-proof" id="about">
+        <div class="container">
+            <p class="section-label text-center mb-8">Trusted by climate-forward organizations</p>
+            <div class="marquee-container">
+                <div class="marquee">
+                    <div class="logo-item">TechNova</div>
+                    <div class="logo-item">GreenLedger</div>
+                    <div class="logo-item">EcoScale</div>
+                    <div class="logo-item">Verdant Systems</div>
+                    <div class="logo-item">CarbonChain</div>
+                    <div class="logo-item">Nexus Earth</div>
+                    <!-- Duplicate for infinite scroll -->
+                    <div class="logo-item">TechNova</div>
+                    <div class="logo-item">GreenLedger</div>
+                    <div class="logo-item">EcoScale</div>
+                    <div class="logo-item">Verdant Systems</div>
+                    <div class="logo-item">CarbonChain</div>
+                    <div class="logo-item">Nexus Earth</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section process dark-section" id="how-it-works">
+        <div class="container">
+            <div class="section-header text-center fade-up">
+                <span class="section-badge">PROCESS</span>
+                <h2>From Project to Planet Impact</h2>
+            </div>
+
+            <div class="flow-container fade-up">
+                <div class="flow-line">
+                    <div class="flow-progress" id="flowProgress"></div>
+                </div>
+
+                <div class="step step-active" data-step="1">
+                    <div class="step-icon-container">
+                        <i data-lucide="sprout"></i>
+                    </div>
+                    <div class="step-num">01</div>
+                    <div class="step-content">
+                        <h3>Register Project</h3>
+                        <p>Submit methodologies and project data securely.</p>
+                    </div>
+                </div>
+
+                <div class="step" data-step="2">
+                    <div class="step-icon-container">
+                        <i data-lucide="cpu"></i>
+                    </div>
+                    <div class="step-num">02</div>
+                    <div class="step-content">
+                        <h3>AI Verification</h3>
+                        <p>Automated validation against global standards.</p>
+                    </div>
+                </div>
+
+                <div class="step" data-step="3">
+                    <div class="step-icon-container">
+                        <i data-lucide="coins"></i>
+                    </div>
+                    <div class="step-num">03</div>
+                    <div class="step-content">
+                        <h3>Mint Credits</h3>
+                        <p>Generate transparent, traceable on-chain tokens.</p>
+                    </div>
+                </div>
+
+                <div class="step" data-step="4">
+                    <div class="step-icon-container">
+                        <i data-lucide="bar-chart-2"></i>
+                    </div>
+                    <div class="step-num">04</div>
+                    <div class="step-content">
+                        <h3>Trade</h3>
+                        <p>Access global liquidity with native settlement.</p>
+                    </div>
+                </div>
+
+                <div class="step" data-step="5">
+                    <div class="step-icon-container">
+                        <i data-lucide="recycle"></i>
+                    </div>
+                    <div class="step-num">05</div>
+                    <div class="step-content">
+                        <h3>Retire</h3>
+                        <p>Offset emissions with verifiable proof of impact.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section class="section features" id="features">
+        <div class="container">
+            <div class="section-header fade-up">
+                <h2>Everything the carbon market was missing</h2>
+            </div>
+
+            <div class="features-grid">
+                <!-- Card 1 -->
+                <div class="glass-card feature-card fade-up">
+                    <div class="feature-icon"><i data-lucide="link"></i></div>
+                    <h3>On-Chain Transparency</h3>
+                    <p>Every credit lifecycle event is immutably recorded, preventing double-counting and fraud.</p>
+                    <a href="#" class="feature-link">Learn more <i data-lucide="arrow-right"></i></a>
+                </div>
+                <!-- Card 2 -->
+                <div class="glass-card feature-card fade-up stagger-1">
+                    <div class="feature-icon"><i data-lucide="bot"></i></div>
+                    <h3>ML-Powered Verification</h3>
+                    <p>Accelerate auditing with AI models trained on thousands of verified environmental projects.</p>
+                    <a href="#" class="feature-link">Learn more <i data-lucide="arrow-right"></i></a>
+                </div>
+                <!-- Card 3 -->
+                <div class="glass-card feature-card fade-up stagger-2">
+                    <div class="feature-icon"><i data-lucide="pie-chart"></i></div>
+                    <h3>Real-Time Analytics</h3>
+                    <p>Monitor market pricing, project performance, and portfolio impact instantly.</p>
+                    <a href="#" class="feature-link">Learn more <i data-lucide="arrow-right"></i></a>
+                </div>
+                <!-- Card 4 -->
+                <div class="glass-card feature-card fade-up">
+                    <div class="feature-icon"><i data-lucide="globe"></i></div>
+                    <h3>Global Standards</h3>
+                    <p>Native support for Verra VCS, Gold Standard, and emerging regional methodologies.</p>
+                    <a href="#" class="feature-link">Learn more <i data-lucide="arrow-right"></i></a>
+                </div>
+                <!-- Card 5 -->
+                <div class="glass-card feature-card fade-up stagger-1">
+                    <div class="feature-icon"><i data-lucide="wallet"></i></div>
+                    <h3>Wallet-Native</h3>
+                    <p>Seamless integration with MetaMask, WalletConnect, and institutional custodians.</p>
+                    <a href="#" class="feature-link">Learn more <i data-lucide="arrow-right"></i></a>
+                </div>
+                <!-- Card 6 -->
+                <div class="glass-card feature-card fade-up stagger-2">
+                    <div class="feature-icon"><i data-lucide="shield-check"></i></div>
+                    <h3>Role-Based Access Control</h3>
+                    <p>Secure permissions tailored for auditors, developers, brokers, and enterprise buyers.</p>
+                    <a href="#" class="feature-link">Learn more <i data-lucide="arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLATFORM PREVIEW -->
+    <section class="section preview" id="marketplace">
+        <div class="container">
+            <div class="section-header text-center fade-up">
+                <h2>See It In Action</h2>
+            </div>
+
+            <div class="browser-mockup fade-up">
+                <div class="browser-header">
+                    <div class="browser-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <div class="browser-url">app.bitwisers.io</div>
+                </div>
+
+                <div class="mockup-tabs">
+                    <button class="tab-btn active" data-target="dashboard">Dashboard</button>
+                    <button class="tab-btn" data-target="marketplace-tab">Marketplace</button>
+                    <button class="tab-btn" data-target="explorer">Credit Explorer</button>
+                    <button class="tab-btn" data-target="analytics">Analytics</button>
+                </div>
+
+                <div class="mockup-content">
+                    <!-- Dashboard Tab -->
+                    <div class="tab-pane active" id="dashboard">
+                        <div class="mockup-dashboard-layout">
+                            <!-- Top Stats Row -->
+                            <div class="mockup-stats-row">
+                                <div class="mockup-stat-card glass-card">
+                                    <div class="stat-header"><i data-lucide="coins" class="text-green-glow"></i> Credits
+                                        Issued</div>
+                                    <div class="stat-val">124,500 <span class="trend up"><i
+                                                data-lucide="arrow-up-right"></i> 12%</span></div>
+                                </div>
+                                <div class="mockup-stat-card glass-card">
+                                    <div class="stat-header"><i data-lucide="folder-kanban" class="text-green-lime"></i>
+                                        Active Projects</div>
+                                    <div class="stat-val">38 <span class="trend up"><i data-lucide="arrow-up-right"></i>
+                                            4</span></div>
+                                </div>
+                                <div class="mockup-stat-card glass-card">
+                                    <div class="stat-header"><i data-lucide="leaf" class="text-green-glow"></i> CO₂
+                                        Offset (Tons)</div>
+                                    <div class="stat-val">892,100 <span class="trend up"><i
+                                                data-lucide="arrow-up-right"></i> 8%</span></div>
+                                </div>
+                                <div class="mockup-stat-card glass-card">
+                                    <div class="stat-header"><i data-lucide="wallet" class="text-muted"></i> Wallet
+                                        Balance</div>
+                                    <div class="stat-val">$45,200 <span class="trend down"><i
+                                                data-lucide="arrow-down-right"></i> 2%</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Grid -->
+                            <div class="mockup-bottom-grid">
+                                <!-- Chart Area -->
+                                <div class="mockup-chart-area glass-card">
+                                    <div class="chart-header">
+                                        <h4>Credits Issued vs Retired</h4>
+                                    </div>
+                                    <div class="main-chart-svg">
+                                        <svg viewBox="0 0 500 150" preserveAspectRatio="none">
+                                            <defs>
+                                                <linearGradient id="mainChartGrad" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="0%" stop-color="rgba(46, 204, 113, 0.3)" />
+                                                    <stop offset="100%" stop-color="rgba(46, 204, 113, 0)" />
+                                                </linearGradient>
+                                            </defs>
+                                            <path
+                                                d="M0,120 Q50,110 100,100 T200,80 T300,90 T400,40 T500,20 L500,150 L0,150 Z"
+                                                fill="url(#mainChartGrad)" />
+                                            <path d="M0,120 Q50,110 100,100 T200,80 T300,90 T400,40 T500,20" fill="none"
+                                                stroke="var(--green-accent)" stroke-width="3" />
+
+                                            <!-- Retired line -->
+                                            <path d="M0,140 Q100,130 200,120 T300,110 T400,80 T500,70" fill="none"
+                                                stroke="var(--text-muted)" stroke-width="2" stroke-dasharray="4,4" />
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <!-- Projects List -->
+                                <div class="mockup-projects-list glass-card">
+                                    <h4 class="mb-4">Recent Projects</h4>
+                                    <div class="proj-list-item">
+                                        <div class="proj-list-icon bg-green-primary"></div>
+                                        <div class="proj-list-info">
+                                            <div>Sumatra Reforestation</div>
+                                            <div class="text-xs text-muted">ID: SUM-092</div>
+                                        </div>
+                                        <div class="proj-list-status status-active">Active</div>
+                                    </div>
+                                    <div class="proj-list-item">
+                                        <div class="proj-list-icon bg-green-lime"></div>
+                                        <div class="proj-list-info">
+                                            <div>Kenya Solar Phase II</div>
+                                            <div class="text-xs text-muted">ID: KEN-114</div>
+                                        </div>
+                                        <div class="proj-list-status status-audit">In Audit</div>
+                                    </div>
+                                    <div class="proj-list-item">
+                                        <div class="proj-list-icon bg-info"></div>
+                                        <div class="proj-list-info">
+                                            <div>Brazil Direct Air Capture</div>
+                                            <div class="text-xs text-muted">ID: BRA-005</div>
+                                        </div>
+                                        <div class="proj-list-status status-pending">Pending</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Marketplace Tab -->
+                    <div class="tab-pane" id="marketplace-tab">
+                        <div class="mockup-market-grid">
+                            <!-- Card 1 -->
+                            <div class="mockup-market-card glass-card">
+                                <div class="market-img img-forest"></div>
+                                <div class="market-content">
+                                    <div class="market-tags"><span class="tag-vcs">VCS</span> <span
+                                            class="tag-nature">Nature</span></div>
+                                    <h4>Borneo Peatland Protection</h4>
+                                    <div class="market-stats">
+                                        <div><span class="text-muted text-xs">Price</span><br><span
+                                                class="font-mono">$14.50</span></div>
+                                        <div><span class="text-muted text-xs">Available</span><br><span
+                                                class="font-mono">12,400</span></div>
+                                    </div>
+                                    <button class="btn btn-glow w-full mt-4" style="padding: 0.5rem">Buy
+                                        Credits</button>
+                                </div>
+                            </div>
+                            <!-- Card 2 -->
+                            <div class="mockup-market-card glass-card">
+                                <div class="market-img img-solar"></div>
+                                <div class="market-content">
+                                    <div class="market-tags"><span class="tag-gold">Gold Std</span> <span
+                                            class="tag-tech">Tech</span></div>
+                                    <h4>Rajasthan Solar Grid</h4>
+                                    <div class="market-stats">
+                                        <div><span class="text-muted text-xs">Price</span><br><span
+                                                class="font-mono">$8.20</span></div>
+                                        <div><span class="text-muted text-xs">Available</span><br><span
+                                                class="font-mono">45,000</span></div>
+                                    </div>
+                                    <button class="btn btn-glow w-full mt-4" style="padding: 0.5rem">Buy
+                                        Credits</button>
+                                </div>
+                            </div>
+                            <!-- Card 3 -->
+                            <div class="mockup-market-card glass-card">
+                                <div class="market-img img-wind"></div>
+                                <div class="market-content">
+                                    <div class="market-tags"><span class="tag-vcs">VCS</span> <span
+                                            class="tag-tech">Tech</span></div>
+                                    <h4>North Sea Wind Power</h4>
+                                    <div class="market-stats">
+                                        <div><span class="text-muted text-xs">Price</span><br><span
+                                                class="font-mono">$11.00</span></div>
+                                        <div><span class="text-muted text-xs">Available</span><br><span
+                                                class="font-mono">8,900</span></div>
+                                    </div>
+                                    <button class="btn btn-glow w-full mt-4" style="padding: 0.5rem">Buy
+                                        Credits</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Credit Explorer Tab -->
+                    <div class="tab-pane" id="explorer">
+                        <div class="explorer-layout">
+                            <div class="explorer-search glass-card">
+                                <i data-lucide="search" class="text-muted"></i>
+                                <input type="text" placeholder="Search by TxHash, Project ID, or Wallet..."
+                                    value="0x7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p3q4r5s6t" readonly>
+                                <button class="btn btn-ghost border-l pl-4 border-subtle">Search</button>
+                            </div>
+
+                            <div class="explorer-details glass-card mt-6">
+                                <div class="flex-between mb-6">
+                                    <div>
+                                        <h3 class="mb-2">Credit Batch #892</h3>
+                                        <div class="font-mono text-xs text-muted">Token ID: 892 | Project: SUM-092</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="badge-verified inline">Authentic</div>
+                                    </div>
+                                </div>
+
+                                <div class="timeline">
+                                    <div class="timeline-step completed">
+                                        <div class="tl-dot"></div>
+                                        <div class="tl-content">
+                                            <strong>Registered</strong>
+                                            <div class="text-xs text-muted font-mono">Oct 12, 2025 • 0x12a...9b4</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-step completed">
+                                        <div class="tl-dot"></div>
+                                        <div class="tl-content">
+                                            <strong>Verified by EcoScale</strong>
+                                            <div class="text-xs text-muted font-mono">Nov 05, 2025 • 0x4f2...8c1</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-step completed">
+                                        <div class="tl-dot"></div>
+                                        <div class="tl-content">
+                                            <strong>Minted On-Chain</strong>
+                                            <div class="text-xs text-muted font-mono">Nov 10, 2025 • 0x8e5...3d2</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-step completed">
+                                        <div class="tl-dot"></div>
+                                        <div class="tl-content">
+                                            <strong>Transferred (Purchased)</strong>
+                                            <div class="text-xs text-muted font-mono">Jan 14, 2026 • 0x2b9...7f4</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-step active">
+                                        <div class="tl-dot"></div>
+                                        <div class="tl-content">
+                                            <strong>Retired (Burned)</strong>
+                                            <div class="text-xs text-muted font-mono">Mar 02, 2026 • 0x7a8...93f</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analytics Tab -->
+                    <div class="tab-pane" id="analytics">
+                        <div class="analytics-grid">
+                            <div class="analytics-card glass-card">
+                                <h4 class="mb-6">Emissions Offset by Region</h4>
+                                <!-- Simulated Bar Chart -->
+                                <div class="bar-chart-sim">
+                                    <div class="bar-col">
+                                        <div class="bar" style="height: 80%"></div><span>NA</span>
+                                    </div>
+                                    <div class="bar-col">
+                                        <div class="bar" style="height: 60%"></div><span>EU</span>
+                                    </div>
+                                    <div class="bar-col">
+                                        <div class="bar" style="height: 100%"></div><span>APAC</span>
+                                    </div>
+                                    <div class="bar-col">
+                                        <div class="bar" style="height: 40%"></div><span>SA</span>
+                                    </div>
+                                    <div class="bar-col">
+                                        <div class="bar" style="height: 30%"></div><span>AF</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="analytics-card glass-card text-center flex-center-col">
+                                <h4 class="mb-6">Portfolio Distribution</h4>
+                                <!-- Simulated Donut Chart -->
+                                <div class="donut-chart-sim">
+                                    <div class="donut-hole">
+                                        <span class="font-mono text-xl text-green-glow">12K</span><br>
+                                        <span class="text-xs text-muted">Total</span>
+                                    </div>
+                                </div>
+                                <div class="donut-legend mt-6 flex gap-4 justify-center text-xs">
+                                    <div><span class="legend-dot bg-green-primary"></span> Nature</div>
+                                    <div><span class="legend-dot bg-green-lime"></span> Tech</div>
+                                    <div><span class="legend-dot bg-info"></span> Energy</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final-cta" id="contact">
+        <div class="cta-mesh-bg"></div>
+        <div class="container text-center relative z-10 fade-up">
+            <h2>Start tracking your environmental impact today.</h2>
+            <a href="#" class="btn btn-glow btn-large mt-8">Create Free Account</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="col-brand">
+                    <a href="#" class="logo mb-4 inline-flex">
+                        <i data-lucide="hexagon" class="logo-icon"></i>
+                        <span class="logo-text">BitWisers</span>
+                    </a>
+                    <p class="text-muted mb-6">Building the transparent infrastructure for the planet's balance sheet.
+                    </p>
+                    <div class="social-icons">
+                        <a href="#"><i data-lucide="twitter"></i></a>
+                        <a href="#"><i data-lucide="linkedin"></i></a>
+                        <a href="#"><i data-lucide="github"></i></a>
+                        <a href="#"><i>Discord</i></a>
+                        <!-- Using text as lucide doesn't have discord usually in standard set -->
+                    </div>
+                </div>
+                <div class="col-links">
+                    <h4>Product</h4>
+                    <a href="#">Marketplace</a>
+                    <a href="#">Credit Explorer</a>
+                    <a href="#">Registries</a>
+                    <a href="#">Pricing</a>
+                </div>
+                <div class="col-links">
+                    <h4>Company</h4>
+                    <a href="#">About Us</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Blog</a>
+                    <a href="#">Contact</a>
+                </div>
+                <div class="col-links">
+                    <h4>Developers</h4>
+                    <a href="#">Documentation</a>
+                    <a href="#">Smart Contracts</a>
+                    <a href="#">API Reference</a>
+                    <a href="#">GitHub</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="audit-badge">
+                    <i data-lucide="shield"></i> Smart contracts audited by Quantstamp
+                </div>
+                <div class="legal-links">
+                    <span>&copy; 2026 BitWisers.</span>
+                    <a href="#">Terms</a>
+                    <a href="#">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
